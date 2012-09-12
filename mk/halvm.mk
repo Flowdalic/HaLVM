@@ -158,15 +158,18 @@ $(DIST_DIR_TREE):
 
 $(HALVM_GHC): $(DIST_DIR_TREE)
 	$(call version_copy_exec,$(TOPDIR)/static-bits/bin/halvm-ghc,$@)
+	$(SED) -i 's|@HALVM_LIBRARY_DIRECTORY@|$(HALVM_LIBDIR)|' $@
 
 $(HALVM_GHC_PKG): $(HALVM_GHC_PKG_BIN) $(DIST_DIR_TREE) \
                   $(TOPDIR)/static-bits/lib/Cabal.conf
 	$(call version_copy_exec,$(TOPDIR)/static-bits/bin/halvm-ghc-pkg,$@)
+	$(SED) -i 's|@HALVM_LIBRARY_DIRECTORY@|$(HALVM_LIBDIR)|' $@
 	$(HALVM_GHC_PKG) register $(TOPDIR)/static-bits/lib/Cabal.conf
 	$(HALVM_GHC_PKG) recache
 
 $(HALVM_CABAL): $(DIST_DIR_TREE) $(HALVM_CABAL_EXE)
 	$(call version_copy_exec,$(TOPDIR)/static-bits/bin/halvm-cabal,$@)
+	$(SED) -i 's|@HALVM_LIBRARY_DIRECTORY@|$(HALVM_LIBDIR)|' $@
 
 $(HALVM_CABAL_EXE): $(STANDARD_TARGETS) $(HALVM_LIBDIR)/cabal.conf
 	$(CP) $(PLATFORM_CABAL_EXE) $(HALVM_CABAL_EXE)
@@ -848,5 +851,8 @@ install:
 	  $(SED) -i "s!$(HALVM_LIBDIR)!$(INSTALL_LIBDIR2)!g" $$f;               \
 	  $(SED) -i "s!$(HALVM_DOCDIR)!$(INSTALL_DOCDIR2)!g" $$f;               \
 	  $(SED) -i "s!$(shell pwd)/dist!$(INSTALL_PREFIX2)!g" $$f;             \
+	done
+	for f in `ls $(INSTALL_BINDIR)/halvm-*`; do               \
+	  $(SED) -i "s!$(HALVM_LIBDIR)!$(INSTALL_LIBDIR2)!g" $$f; \
 	done
 

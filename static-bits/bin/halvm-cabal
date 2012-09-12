@@ -1,9 +1,4 @@
-BINDIR=`echo $0 | sed 's/[^/]*$//g'`
-LIBDIR_REL=${BINDIR}../lib/HaLVM-HALVM_VER
-CURDIR=`pwd`
-cd ${LIBDIR_REL}
-LIBDIR=`pwd`
-cd ${CURDIR}
+LIBDIR=@HALVM_LIBRARY_DIRECTORY@
 CABALBIN=${LIBDIR}/cabal
 CABALCONF=${LIBDIR}/cabal.conf
 
